@@ -1,0 +1,22 @@
+{
+	"BUILD_DIR" : "/home/hermandi21/Mein-Schreibtisch/AIN8/3d-cv/02-assignment01/build/Framework_autogen",
+	"CMAKE_BINARY_DIR" : "/home/hermandi21/Mein-Schreibtisch/AIN8/3d-cv/02-assignment01/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/hermandi21/Mein-Schreibtisch/AIN8/3d-cv/02-assignment01/build",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/hermandi21/Mein-Schreibtisch/AIN8/3d-cv/02-assignment01/Framework/Framework",
+	"CMAKE_SOURCE_DIR" : "/home/hermandi21/Mein-Schreibtisch/AIN8/3d-cv/02-assignment01/Framework/Framework",
+	"CROSS_CONFIG" : false,
+	"GENERATOR" : "Ninja",
+	"INCLUDE_DIR" : "/home/hermandi21/Mein-Schreibtisch/AIN8/3d-cv/02-assignment01/build/Framework_autogen/include",
+	"INPUTS" : [],
+	"LOCK_FILE" : "/home/hermandi21/Mein-Schreibtisch/AIN8/3d-cv/02-assignment01/build/CMakeFiles/Framework_autogen.dir/AutoRcc_resources_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "resources" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_resources.cpp",
+	"RCC_EXECUTABLE" : "/home/hermandi21/Qt/6.8.3/gcc_64/libexec/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/home/hermandi21/Mein-Schreibtisch/AIN8/3d-cv/02-assignment01/build/CMakeFiles/Framework_autogen.dir/AutoRcc_resources_EWIEGA46WW_Used.txt",
+	"SOURCE" : "/home/hermandi21/Mein-Schreibtisch/AIN8/3d-cv/02-assignment01/Framework/Framework/resources.qrc",
+	"USE_BETTER_GRAPH" : true,
+	"VERBOSITY" : 0
+}

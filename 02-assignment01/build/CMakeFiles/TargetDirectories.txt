@@ -1,0 +1,5 @@
+/home/hermandi21/Mein-Schreibtisch/AIN8/3d-cv/02-assignment01/build/CMakeFiles/Framework.dir
+/home/hermandi21/Mein-Schreibtisch/AIN8/3d-cv/02-assignment01/build/CMakeFiles/edit_cache.dir
+/home/hermandi21/Mein-Schreibtisch/AIN8/3d-cv/02-assignment01/build/CMakeFiles/rebuild_cache.dir
+/home/hermandi21/Mein-Schreibtisch/AIN8/3d-cv/02-assignment01/build/CMakeFiles/Framework_autogen_timestamp_deps.dir
+/home/hermandi21/Mein-Schreibtisch/AIN8/3d-cv/02-assignment01/build/CMakeFiles/Framework_autogen.dir
