@@ -50,14 +50,13 @@ void CameraObject::draw(const RenderCamera& cam, const QColor& color, float widt
     float rechtsOben_x = halfWidth + principalPoint.x();
     float linksOben_y = -halfHeight + principalPoint.y();
     float rechtsUnten_y = halfHeight + principalPoint.y();
-    float z = focalLength;
-
-    // Transformiere alle Punkte in Weltkoordinaten
+    // Projektionsebene = Far-Plane bei z = dist
+    float scale = dist / focalLength;
     QVector4D origin_local(0, 0, 0, 1);
-    QVector4D lo_local(linksOben_x, linksOben_y, z, 1);
-    QVector4D ro_local(rechtsOben_x, linksOben_y, z, 1);
-    QVector4D ru_local(rechtsOben_x, rechtsUnten_y, z, 1);
-    QVector4D lu_local(linksOben_x, rechtsUnten_y, z, 1);
+    QVector4D lo_local(linksOben_x * scale, linksOben_y   * scale, dist, 1);
+    QVector4D ro_local(rechtsOben_x * scale, linksOben_y  * scale, dist, 1);
+    QVector4D ru_local(rechtsOben_x * scale, rechtsUnten_y * scale, dist, 1);
+    QVector4D lu_local(linksOben_x * scale, rechtsUnten_y  * scale, dist, 1);
 
     QVector3D origin_world = QVector3D(worldMatrix * origin_local);
     QVector3D lo_world = QVector3D(worldMatrix * lo_local);
@@ -65,13 +64,14 @@ void CameraObject::draw(const RenderCamera& cam, const QColor& color, float widt
     QVector3D ru_world = QVector3D(worldMatrix * ru_local);
     QVector3D lu_world = QVector3D(worldMatrix * lu_local);
 
-    // Zeichne die Bildebene (Rechteck)
+    // Projektionsebene (Rechteck + gefüllte Fläche)
     cam.renderLine(lo_world, ro_world, color, width);
     cam.renderLine(ro_world, ru_world, color, width);
     cam.renderLine(ru_world, lu_world, color, width);
     cam.renderLine(lu_world, lo_world, color, width);
+    cam.renderPlane(lo_world, ro_world, ru_world, lu_world, color, 0.3f);
 
-    // Zeichne Pyramide vom Ursprung zu den 4 Ecken
+    // Frustum-Kanten vom Ursprung zur Projektionsebene
     cam.renderLine(origin_world, lo_world, color, width);
     cam.renderLine(origin_world, ro_world, color, width);
     cam.renderLine(origin_world, ru_world, color, width);
@@ -112,6 +112,12 @@ QVector2D CameraObject::worldToImageCoordinates(const QVector3D& worldPoint) con
     return QVector2D(x_image, y_image);
 }
 
+void CameraObject::setProjectionPlane(const QVector3D& point, const QVector3D& normal) {
+    customPlanePoint  = point;
+    customPlaneNormal = normal.normalized();
+    useCustomPlane    = true;
+}
+
 void CameraObject::projectHexahedron(const Hexahedron* hex, const RenderCamera& renderer) const {
     if (!hex) {
         std::cout << "ERROR: Hexahedron ist nullptr!" << std::endl;
@@ -130,19 +136,32 @@ void CameraObject::projectHexahedron(const Hexahedron* hex, const RenderCamera& 
         std::cout << "\nPunkt " << i << ": (" << worldPoint.x() << ", " 
                   << worldPoint.y() << ", " << worldPoint.z() << ")" << std::endl;
         
-        QVector2D imageCoords = worldToImageCoordinates(worldPoint);
-        std::cout << "  Image Coords: (" << imageCoords.x() << ", " 
-                  << imageCoords.y() << ")" << std::endl;
-        
-        float z = 4.0f;  // Z-Position der Plane
-        QVector4D projPointLocal(imageCoords.x(), imageCoords.y(), z, 1.0f);
-        QVector3D projPointWorld = QVector3D(worldMatrix * projPointLocal);
-        
-        std::cout << "  Proj World: (" << projPointWorld.x() << ", " 
+        QVector3D projPointWorld;
+        bool isValid = false;
+
+        if (useCustomPlane) {
+            // Strahl-Ebenen-Schnitt: Strahl von projectionCenter durch worldPoint
+            QVector3D dir = worldPoint - projectionCenter;
+            float denom = QVector3D::dotProduct(customPlaneNormal, dir);
+            if (std::abs(denom) > 1e-6f) {
+                float t = QVector3D::dotProduct(customPlaneNormal, customPlanePoint - projectionCenter) / denom;
+                if (t > 0.0f) {
+                    projPointWorld = projectionCenter + t * dir;
+                    isValid = true;
+                }
+            }
+        } else {
+            QVector2D imageCoords = worldToImageCoordinates(worldPoint);
+            isValid = imageCoords.x() > -999 && imageCoords.y() > -999;
+            float scale = dist / focalLength;
+            QVector4D projPointLocal(imageCoords.x() * scale, imageCoords.y() * scale, dist, 1.0f);
+            projPointWorld = QVector3D(worldMatrix * projPointLocal);
+        }
+
+        std::cout << "  Proj World: (" << projPointWorld.x() << ", "
                   << projPointWorld.y() << ", " << projPointWorld.z() << ")" << std::endl;
-        
+
         projectedPoints.push_back(projPointWorld);
-        bool isValid = imageCoords.x() > -999 && imageCoords.y() > -999;
         pointsValid.push_back(isValid);
         std::cout << "  Valid: " << (isValid ? "JA" : "NEIN") << std::endl;
         

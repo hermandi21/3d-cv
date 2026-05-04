@@ -19,6 +19,9 @@ private:
     float dx, dy, dist;
     QMatrix4x4 worldMatrix;
     QVector4D origin;
+    bool useCustomPlane = false;
+    QVector3D customPlanePoint;
+    QVector3D customPlaneNormal;
 
 public:
     CameraObject(QVector4D _ori, 
@@ -36,6 +39,7 @@ public:
     QVector3D projectPoint(const QVector3D& worldPoint) const;
     QVector2D worldToImageCoordinates(const QVector3D& worldPoint) const;
     void projectHexahedron(const Hexahedron* hex, const RenderCamera& renderer) const;
+    void setProjectionPlane(const QVector3D& point, const QVector3D& normal);
     // Getter-Methoden
     QMatrix4x4 getWorldMatrix() const { return worldMatrix; }
     float getFocalLength() const { return focalLength; }

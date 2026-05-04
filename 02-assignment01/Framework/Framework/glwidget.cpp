@@ -49,7 +49,7 @@ GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent), pointSize(5)
 
     // setup the scene
     sceneManager.push_back(new Axes(E0,QMatrix4x4()));    // the global world coordinate system
-    sceneManager.push_back(new Plane(E0+4*E3,-E3));       // some plane
+    //sceneManager.push_back(new Plane(E0+4*E3,-E3));       // some plane
 
     // TODO: Assignment 1, Part 1
 
@@ -71,10 +71,17 @@ GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent), pointSize(5)
     
     // Kamera 1
     QMatrix4x4 cam1;
-    cam1.translate(0.5f, 0.0f, 0.0f);
-    //cam1.rotate(90.0f, QVector3D(1,0,0));
-    sceneManager.push_back(new CameraObject(E0, cam1, 1.2f, 0.9f, 2.0f));
+    cam1.translate(0.0f, 0.0f, 0.0f);
+    //cam1.rotate(0.0f, QVector3D(1,0,0));
+    CameraObject* cam1Obj = new CameraObject(E0, cam1, 1.2f, 0.9f, 2.0f);
+    sceneManager.push_back(cam1Obj);
 
+    // Kamera 2 (verschoben und um Y-Achse rotiert)
+    QMatrix4x4 cam2;
+    cam2.translate(3.0f, 0.0f, 0.0f);
+    cam2.rotate(-30.0f, QVector3D(0,1,0));
+    cam2Obj = new CameraObject(E0, cam2, 1.2f, 0.9f, 2.0f);
+    sceneManager.push_back(cam2Obj);
 
 
     // TODO: Assignement 1, Part 3
@@ -287,9 +294,21 @@ void GLWidget::radioButtonClicked()
 //
 // controls check box clicks
 //
+void GLWidget::setShowAxes(bool visible)
+{
+    sceneManager.setShowAxes(visible);
+    update();
+}
+
 void GLWidget::checkBoxClicked()
 {
     QMessageBox::warning(this, "Feature" ,"ups hier fehlt noch was");
+}
+
+void GLWidget::setShowCam2(bool visible)
+{
+    if (cam2Obj) cam2Obj->setVisible(visible);
+    update();
 }
 
 //

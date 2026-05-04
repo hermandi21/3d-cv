@@ -34,6 +34,7 @@ class SceneObject
 {
 protected:
     SceneObjectType type;
+    bool            m_visible = true;
 
 public:
     SceneObject(                      ): type(SceneObjectType::ST_NONE) {}
@@ -44,5 +45,7 @@ public:
     virtual void affineMap(const QMatrix4x4&                        )       = 0;
     virtual void draw     (const RenderCamera&, const QColor&, float) const = 0;
 
-    SceneObjectType getType() const { return type; }
+    SceneObjectType getType()    const { return type;      }
+    bool            isVisible()  const { return m_visible; }
+    void            setVisible(bool v) { m_visible = v;    }
 };

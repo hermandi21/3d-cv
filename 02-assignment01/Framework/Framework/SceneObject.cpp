@@ -5,5 +5,8 @@
 //
 
 
-// Nothing to do here, yet...
+/* // Nothing to do here, yet...
 
+case ST_AXES:
+    obj->draw(renderer, COLOR_AXES, 2.0f);
+    break; */

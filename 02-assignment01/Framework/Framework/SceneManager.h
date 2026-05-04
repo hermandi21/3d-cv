@@ -15,6 +15,7 @@
 class SceneManager: public QObject, public std::vector<SceneObject*>
 {
 private:
+    bool m_showAxes = true;
 public:
     SceneManager(QObject* parent=nullptr): QObject(parent) {}
     ~SceneManager () override {}
@@ -27,5 +28,6 @@ public:
     //
     void draw(const RenderCamera& renderer,
               const QColor      & color    = COLOR_SCENE) const;
+    void setShowAxes(bool visible){ m_showAxes = visible;}
 };
 
