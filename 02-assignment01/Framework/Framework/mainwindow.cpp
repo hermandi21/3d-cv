@@ -14,7 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->glwidget->setFocus();
 
     connect(ui->pushButton,       &QPushButton ::clicked,      ui->glwidget, &GLWidget  ::openFileDialog);
-    connect(ui->radioButton_1,    &QRadioButton::clicked,      ui->glwidget, &GLWidget  ::radioButtonClicked);
+    connect(ui->checkBox_showAxes, &QCheckBox::toggled,         ui->glwidget, &GLWidget  ::setShowAxes);
+    connect(ui->checkBox_showCam2, &QCheckBox::toggled,         ui->glwidget, &GLWidget  ::setShowCam2);
     connect(ui->radioButton_2,    &QRadioButton::clicked,      ui->glwidget, &GLWidget  ::radioButtonClicked);
     connect(ui->horizontalSlider, &QSlider     ::valueChanged, this,         &MainWindow::updatePointSize);
 

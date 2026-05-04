@@ -13,4 +13,6 @@ cmake_install.cmake
 *.so
 
 # VS Code
+.vscode/build/
+**/build/
 .vscode/

@@ -10,6 +10,7 @@
 
 #include "RenderCamera.h"           // containes declaration of Renderer
 #include "SceneManager.h"       // containes declaration of Scene Manager
+#include "CameraObject.h"
 
 class GLWidget : public QOpenGLWidget
 {
@@ -18,7 +19,6 @@ private:
     // scene and scene control
     int           pointSize;
     SceneManager  sceneManager;
-    bool showAxes = true;
 
 public:
     GLWidget(QWidget* parent = nullptr);
@@ -31,6 +31,8 @@ public slots:
     void checkBoxClicked    ();    // handle check boxes
     void spinBoxValueChanged(int); // handles spin  boxes changes
     void setPointSize       (int);
+    void setShowAxes        (bool);
+    void setShowCam2        (bool);
 
 protected:
     // painting the canvas
@@ -57,6 +59,9 @@ private:
 
     // rendering control
     RenderCamera* renderer=nullptr;
+
+    // scene object references for UI control
+    CameraObject* cam2Obj = nullptr;
 };
 
 

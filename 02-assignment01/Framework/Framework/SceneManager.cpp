@@ -16,10 +16,10 @@ using enum SceneObjectType;
 void SceneManager::draw(const RenderCamera& renderer, const QColor& color) const
 {
 
-    for (auto obj : *this) if (obj) {
+    for (auto obj : *this) if (obj && obj->isVisible()) {
         switch (obj->getType()) {
         case ST_AXES:
-            obj->draw(renderer,COLOR_AXES,2.0f);
+            if (m_showAxes) obj->draw(renderer,COLOR_AXES,2.0f);
             break;
         case ST_PLANE:
             obj->draw(renderer,COLOR_PLANE,0.3f);

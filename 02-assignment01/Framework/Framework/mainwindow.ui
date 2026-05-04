@@ -48,12 +48,22 @@ QRadioButton::indicator {
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_1">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
+       <widget class="QCheckBox" name="checkBox_showAxes">
         <property name="text">
-         <string>Box 1</string>
+         <string>Weltkoordinatensystem</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_showCam2">
+        <property name="text">
+         <string>Kamera 2</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
