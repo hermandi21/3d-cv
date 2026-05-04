@@ -1,0 +1,16 @@
+# Build-Verzeichnisse
+build/
+**/build/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# Compiled objects
+*.o
+*.a
+*.so
+
+# VS Code
+.vscode/
