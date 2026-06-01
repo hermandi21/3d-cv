@@ -118,7 +118,7 @@ void CameraObject::setProjectionPlane(const QVector3D& point, const QVector3D& n
     useCustomPlane    = true;
 }
 
-void CameraObject::projectHexahedron(const Hexahedron* hex, const RenderCamera& renderer) const {
+void CameraObject::projectHexahedron(const Hexahedron* hex, const RenderCamera& renderer, const QColor& col) const {
     if (!hex) {
         std::cout << "ERROR: Hexahedron ist nullptr!" << std::endl;
         return;

@@ -38,11 +38,20 @@ public:
     //fuer den part 3
     QVector3D projectPoint(const QVector3D& worldPoint) const;
     QVector2D worldToImageCoordinates(const QVector3D& worldPoint) const;
-    void projectHexahedron(const Hexahedron* hex, const RenderCamera& renderer) const;
+    void projectHexahedron(const Hexahedron* hex, const RenderCamera& renderer,
+                            const QColor& col = QColor(0, 255, 0)) const;
     void setProjectionPlane(const QVector3D& point, const QVector3D& normal);
+    void setWorldMatrix(const QMatrix4x4& m) {
+        worldMatrix = m;
+        projectionCenter = QVector3D(m(0,3), m(1,3), m(2,3));
+    }
+
     // Getter-Methoden
     QMatrix4x4 getWorldMatrix() const { return worldMatrix; }
     float getFocalLength() const { return focalLength; }
     float getImageWidth() const { return dx; }
     float getImageHeight() const { return dy; }
+    float getDist() const {return dist; }
+    QVector2D getPrincipalPoint() const {return principalPoint;}
+    QVector3D getProjectionCenter() const {return projectionCenter;}
 };

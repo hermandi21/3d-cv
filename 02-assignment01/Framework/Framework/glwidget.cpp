@@ -74,14 +74,9 @@ GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent), pointSize(5)
     cam1.translate(0.0f, 0.0f, 0.0f);
     //cam1.rotate(0.0f, QVector3D(1,0,0));
     CameraObject* cam1Obj = new CameraObject(E0, cam1, 1.2f, 0.9f, 2.0f);
-    sceneManager.push_back(cam1Obj);
+    //sceneManager.push_back(cam1Obj);
 
-    // Kamera 2 (verschoben und um Y-Achse rotiert)
-    QMatrix4x4 cam2;
-    cam2.translate(3.0f, 0.0f, 0.0f);
-    cam2.rotate(-30.0f, QVector3D(0,1,0));
-    cam2Obj = new CameraObject(E0, cam2, 1.2f, 0.9f, 2.0f);
-    sceneManager.push_back(cam2Obj);
+
 
 
     // TODO: Assignement 1, Part 3
@@ -97,7 +92,38 @@ GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent), pointSize(5)
     //       - Part 2: Its reconstruction method should reconstruct the 3d geometry of the other scene objects from their stereo projections.
     //       - Part 3: Its reconstruction method should reconstruct the 3d geometry of the other scene objects from misaligned stereo projections.
     //       - This has to be used in Scene.cpp/Scene::draw.
-    //
+    
+    // Kamera 2 (verschoben und um Y-Achse rotiert)
+    QMatrix4x4 cam2;
+    cam2.translate(3.0f, 0.0f, 0.0f);
+    cam2.rotate(-30.0f, QVector3D(0,1,0));
+    cam2Obj = new CameraObject(E0, cam2, 1.2f, 0.9f, 2.0f);
+    sceneManager.push_back(cam2Obj);
+
+    // Part 1 & 2: aligned stereo camera pair (normal case)
+    QMatrix4x4 stereoLeft;
+    stereoLeft.translate(-1.5f, 0.0f, 0.0f);
+
+    QMatrix4x4 stereoRight;
+    stereoRight.translate( 1.5f, 0.0f, 0.0f);
+
+    sceneManager.push_back(new StereoCameraObject(
+        E0, stereoLeft,
+        E0, stereoRight,
+        1.2f, 0.9f, 2.0f));
+
+    // Part 3: same setup but right camera rotated around Y (calibration error)
+    // The base matrix is a pure translation — rotation is applied via setMisalignAngle.
+    QMatrix4x4 stereoRightBase;
+    stereoRightBase.translate(1.5f, 0.0f, 0.0f);
+
+    m_misalignedStereo = new StereoCameraObject(
+        E0, stereoLeft,
+        E0, stereoRightBase,
+        1.2f, 0.9f, 2.0f);
+    m_misalignedStereo->setRecoColor(QColor(255, 200, 0)); // yellow — shows the error
+    m_misalignedStereo->setMisalignAngle(5.0f);            // initial 1° error; change here
+    sceneManager.push_back(m_misalignedStereo);
 }
 
 //
@@ -202,6 +228,19 @@ void GLWidget::keyPressEvent(QKeyEvent * event)
         for (auto s: sceneManager) if (s->getType()==SceneObjectType::ST_POINT_CLOUD) s->affineMap(A);
         break;
     }
+        // Part 3: adjust misalignment angle of right stereo camera
+    case Key_O:
+        if (m_misalignedStereo) {
+            m_misalignedStereo->setMisalignAngle(
+                m_misalignedStereo->getMisalignAngle() + 1.0f);
+        }
+        break;
+    case Key_P:
+        if (m_misalignedStereo) {
+            m_misalignedStereo->setMisalignAngle(
+                m_misalignedStereo->getMisalignAngle() - 1.0f);
+        }
+        break;
         // quit application
     case Key_Q:
     case Key_Escape: QApplication::instance()->quit(); break;

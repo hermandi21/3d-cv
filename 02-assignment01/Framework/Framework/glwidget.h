@@ -11,6 +11,7 @@
 #include "RenderCamera.h"           // containes declaration of Renderer
 #include "SceneManager.h"       // containes declaration of Scene Manager
 #include "CameraObject.h"
+#include "StereoCameraObject.h"
 
 class GLWidget : public QOpenGLWidget
 {
@@ -61,7 +62,8 @@ private:
     RenderCamera* renderer=nullptr;
 
     // scene object references for UI control
-    CameraObject* cam2Obj = nullptr;
+    CameraObject*        cam2Obj          = nullptr;
+    StereoCameraObject*  m_misalignedStereo = nullptr;
 };
 
 

@@ -46,6 +46,8 @@ set(SOURCES
     resources.qrc
     CameraObject.cpp
     CameraObject.h
+    StereoCameraObject.cpp
+    StereoCameraObject.h
 )
 
 # Executable erstellen
